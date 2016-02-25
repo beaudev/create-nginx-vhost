@@ -5,18 +5,20 @@
 
 function do_nginx_new_vhost() {
 
+cur_dir=$( dirname "${BASH_SOURCE[0]}" )
+
 [ -z "$1" -o -z "$2" -o -z "$3" ] && echo "Give name, path and hosts" && return
 name=$1
 path=$2
 hosts=$3
 
-[ -f /etc/nginx/sites-enabled/project_$name ] && (echo "Updating vhost for project: $name" && sudo rm /etc/nginx/sites-enabled/project_$name && sudo rm /etc/nginx/sites-available/project_$name ) || echo "Creating vhost for project: $name"
+[ -f /etc/nginx/sites-enabled/project_$name.conf ] && (echo "Updating vhost for project: $name" && sudo rm /etc/nginx/sites-enabled/project_$name.conf && sudo rm /etc/nginx/sites-available/project_$name.conf ) || echo "Creating vhost for project: $name"
 
 sudo bash <<EOF
-cat default-symfony-nginx.conf | sed "s/__project_name__/$name/g;s#__project_path__#$path#g;s/__project_hosts__/$hosts/g"  > /etc/nginx/sites-available/project_$name
+cat ${cur_dir}/default-symfony-nginx.conf | sed "s/__project_name__/$name/g;s#__project_path__#$path#g;s/__project_hosts__/$hosts/g"  > /etc/nginx/sites-available/project_$name.conf
 EOF
 
-sudo ln -s /etc/nginx/sites-available/project_$name /etc/nginx/sites-enabled/project_$name
+sudo ln -s /etc/nginx/sites-available/project_$name.conf /etc/nginx/sites-enabled/project_$name.conf
 
 
 result=`cat /etc/hosts | grep -v '^$\|^\s*\#' | grep $name`
