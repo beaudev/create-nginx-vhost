@@ -13,14 +13,14 @@ type=$2
 path=$3
 hosts=$4
 
-if [ ! -f ${cur_dir}/profiles/default-${type}.conf ]; then
+if [ ! -f ${cur_dir}/profiles/${type}.conf ]; then
   echo -e "profile ${type} doesn't exist\nChoose one profile among :\n`ls ${cur_dir}/profiles/`" && return
 fi
 
 [ -f /etc/nginx/sites-enabled/project_$name.conf ] && (echo "Updating vhost for project: $name" && sudo rm /etc/nginx/sites-enabled/project_$name.conf && sudo rm /etc/nginx/sites-available/project_$name.conf ) || echo "Creating vhost for project: $name"
 
 sudo bash <<EOF
-cat ${cur_dir}/profiles/default-${type}.conf | sed "s/__project_name__/$name/g;s#__project_path__#$path#g;s/__project_hosts__/$hosts/g"  > /etc/nginx/sites-available/project_$name.conf
+cat ${cur_dir}/profiles/${type}.conf | sed "s/__project_name__/$name/g;s#__project_path__#$path#g;s/__project_hosts__/$hosts/g"  > /etc/nginx/sites-available/project_$name.conf
 EOF
 
 sudo ln -s /etc/nginx/sites-available/project_$name.conf /etc/nginx/sites-enabled/project_$name.conf
