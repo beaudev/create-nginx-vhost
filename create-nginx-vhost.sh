@@ -26,7 +26,7 @@ result=`cat /etc/hosts | grep -v '^$\|^\s*\#' | grep $name`
 if [ "x$result" != "x" ]; then
 	echo "host already defined"
 else
-	last_local_ip=`cat /etc/hosts | grep -v '^$\|^\s*\#'|sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n | tail -1 |nawk '{print $1}' `
+	last_local_ip=`cat /etc/hosts | grep 127 | grep -v '^$\|^\s*\#'|sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n | tail -1 |nawk '{print $1}' `
 	[ -z "$last_local_ip" ] && echo "No Ips in your hosts file, strange..." && exit
 	baseaddr="$(echo $last_local_ip | cut -d. -f1-3)"
 	next_ip=$(echo $last_local_ip | cut -d. -f4)
