@@ -1,20 +1,20 @@
 #!/bin/bash 
 # add vhost for a new nginx project
 
-# use like this : do_nginx_new_vhost new_project symfony-php5 /path/to/your/project "toto.popo.com qsdqsd.popo.com"
+# use like this : do_nginx_new_vhost new_project symfony-php5-fpm-nginx /path/to/your/project "toto.popo.com qsdqsd.popo.com"
 
 function do_nginx_new_vhost() {
 
 cur_dir=$( dirname "${BASH_SOURCE[0]}" )
 
-[ -z "$1" -o -z "$2" -o -z "$3" -z "$4" ] && echo "Give name, type, path and hosts" && return
+[ -z "$1" -o -z "$2" -o -z "$3" -o -z "$4" ] && echo "Give name, type, path and hosts" && return
 name=$1
 type=$2
 path=$3
 hosts=$4
 
-if [ ! -d profiles/default-${type}.conf ]; then
-  echo -e "profile ${type} doesn't exist\nChoose one profile among `ls ${cur_dir}/profiles/`" && && return
+if [ ! -f ${cur_dir}/profiles/default-${type}.conf ]; then
+  echo -e "profile ${type} doesn't exist\nChoose one profile among :\n`ls ${cur_dir}/profiles/`" && return
 fi
 
 [ -f /etc/nginx/sites-enabled/project_$name.conf ] && (echo "Updating vhost for project: $name" && sudo rm /etc/nginx/sites-enabled/project_$name.conf && sudo rm /etc/nginx/sites-available/project_$name.conf ) || echo "Creating vhost for project: $name"
