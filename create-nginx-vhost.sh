@@ -26,7 +26,7 @@ EOF
 sudo ln -s /etc/nginx/sites-available/project_$name.conf /etc/nginx/sites-enabled/project_$name.conf
 
 
-result=`cat /etc/hosts | grep -v '^$\|^\s*\#' | grep $name`
+result=`cat /etc/hosts | grep -v '^$\|^\s*\#' | grep $hosts`
 
 if [ "x$result" != "x" ]; then
 	echo "host already defined"
