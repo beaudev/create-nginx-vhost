@@ -43,5 +43,5 @@ else
 		echo "$baseaddr."$((next_ip+1))" "$hosts | sudo tee -a /etc/hosts
 	fi
 fi
-sudo service nginx restart
+sudo service nginx reload
 }
